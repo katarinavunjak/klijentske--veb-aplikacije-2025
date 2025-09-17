@@ -1,0 +1,21 @@
+
+.movie-info { display: grid; grid-template-columns: 220px 1fr; gap: 16px; }
+.poster { width: 100%; border-radius: 8px; object-fit: cover; }
+.info .avg { margin-top: 8px; }
+
+.projections { display: grid; grid-template-columns: repeat(auto-fill, minmax(220px, 1fr)); gap: 12px; }
+.review-box { padding: 12px; border-radius: 8px; border: 1px solid rgba(255,255,255,.1); }
+.stars { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; }
+.full { width: 100%; }
+.review-card { margin-bottom: 10px; }
+.rev-head { display: flex; justify-content: space-between; }
+
+.details-container { max-width: 1200px; margin: 16px auto; padding: 0 16px; }
+
+
+.trailer-wrapper { display: flex; justify-content: center; margin: 16px 0 24px; }
+.trailer-box { width: 100%; max-width: 960px; border-radius: 12px; overflow: hidden; box-shadow: var(--mat-elevation-6); }
+
+
+.trailer-aspect { position: relative; width: 100%; aspect-ratio: 16 / 9; }
+.trailer-aspect iframe { position: absolute; inset: 0; width: 100%; height: 100%; }

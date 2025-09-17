@@ -1,0 +1,34 @@
+# Node / Angular
+node_modules/
+dist/
+coverage/
+.angular/cache/
+
+# TypeScript/Tools
+*.tsbuildinfo
+.eslintcache
+
+# Env 
+.env
+*.env
+.env.*.local
+src/environments/*.local.ts
+
+# Logovi
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# Editor/IDE
+.vscode/
+!.vscode/settings.json
+!.vscode/tasks.json
+!.vscode/launch.json
+!.vscode/extensions.json
+.idea/
+.history/
+
+# OS
+.DS_Store
+Thumbs.db

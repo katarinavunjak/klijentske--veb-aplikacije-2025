@@ -1,0 +1,4 @@
+.cart-card { margin: 20px; }
+.cart-table { width: 100%; }
+.inline-controls { display: flex; gap: 8px; margin-top: 6px; }
+.total-line { display: flex; justify-content: flex-end; padding: 12px 16px; }

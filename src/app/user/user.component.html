@@ -1,0 +1,156 @@
+<div class="wrapper" *ngIf="user">
+
+  
+  <mat-card class="user-card" appearance="outlined">
+    <mat-card-header>
+      <img mat-card-avatar [src]="['https://ui-avatars.com/api/?name='+user.email]" alt="avatar">
+      <mat-card-title>{{user.firstName}} {{user.lastName}}</mat-card-title>
+      <mat-card-subtitle>{{user.email}}</mat-card-subtitle>
+    </mat-card-header>
+
+    <mat-card-content>
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <span>Promena lozinke</span>
+        </mat-expansion-panel-header>
+
+        <mat-form-field class="full-width">
+          <mat-label>Stara lozinka</mat-label>
+          <input matInput type="password" [(ngModel)]="oldPassword">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Nova lozinka</mat-label>
+          <input matInput type="password" [(ngModel)]="newPassword">
+        </mat-form-field>
+        <mat-form-field class="full-width">
+          <mat-label>Ponovi lozinku</mat-label>
+          <input matInput type="password" [(ngModel)]="repeatPassword">
+        </mat-form-field>
+        <button mat-button color="primary" (click)="changePassword()">Sačuvaj</button>
+      </mat-expansion-panel>
+
+      <mat-expansion-panel>
+        <mat-expansion-panel-header>
+          <span>Ažuriranje profila</span>
+        </mat-expansion-panel-header>
+
+        <div *ngIf="userCopy">
+          <mat-form-field class="full-width">
+            <mat-label>Email</mat-label>
+            <input matInput type="email" [(ngModel)]="userCopy.email" disabled>
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Ime</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.firstName">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Prezime</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.lastName">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Telefon</mat-label>
+            <input matInput type="tel" [(ngModel)]="userCopy.phone">
+          </mat-form-field>
+          <mat-form-field class="full-width">
+            <mat-label>Adresa</mat-label>
+            <input matInput type="text" [(ngModel)]="userCopy.address">
+          </mat-form-field>
+
+          
+          <mat-form-field class="full-width">
+            <mat-label>Omiljeni žanrovi</mat-label>
+            <input matInput placeholder="npr. Drama, Comedy" [(ngModel)]="userCopy.favouriteGenres">
+          </mat-form-field>
+
+          <button mat-button color="primary" (click)="updateProfile()">Ažuriraj</button>
+        </div>
+      </mat-expansion-panel>
+    </mat-card-content>
+  </mat-card>
+
+  
+  <mat-card appearance="outlined" class="history-card">
+    <mat-card-header><h2>Istorija projekcija</h2></mat-card-header>
+    <mat-card-content>
+
+      <table mat-table [dataSource]="history" class="mat-elevation-z8" *ngIf="history.length; else noHistory">
+        <ng-container matColumnDef="movie">
+          <th mat-header-cell *matHeaderCellDef>Film</th>
+          <td mat-cell *matCellDef="let r">{{ r.movieTitle }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="dateTime">
+          <th mat-header-cell *matHeaderCellDef>Termin</th>
+          <td mat-cell *matCellDef="let r">{{ r.dateTime | date:'short' }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="price">
+          <th mat-header-cell *matHeaderCellDef>Cena</th>
+          <td mat-cell *matCellDef="let r">
+            {{ r.price }} RSD × {{ r.count }} = <b>{{ r.price*r.count | number:'1.0-0' }} RSD</b>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="status">
+          <th mat-header-cell *matHeaderCellDef>Status</th>
+          <td mat-cell *matCellDef="let r">{{ r.status }}</td>
+        </ng-container>
+
+        <ng-container matColumnDef="rating">
+          <th mat-header-cell *matHeaderCellDef>Ocena</th>
+          <td mat-cell *matCellDef="let r">
+            <ng-container *ngIf="r.status === 'gledano'; else dash">
+
+              
+              <div *ngIf="r.hasReview; else canReview">
+                <div>Ocena: <b>{{ r.existingReview?.rating }}★</b></div>
+                <div *ngIf="r.existingReview?.comment">Komentar: {{ r.existingReview?.comment }}</div>
+              </div>
+
+              
+              <ng-template #canReview>
+                <div class="rating-row">
+                  <button mat-button *ngFor="let s of [1,2,3,4,5]"
+                          (click)="selectRating(r, s)"
+                          [disabled]="r.hasReview"
+                          [class.selected]="selectedRatingMap[r.id]===s">
+                    {{s}}★
+                  </button>
+                  <span *ngIf="selectedRatingMap[r.id]">Izabrano: {{selectedRatingMap[r.id]}}★</span>
+                </div>
+
+                <mat-form-field class="comment">
+                  <mat-label>Komentar (opciono)</mat-label>
+                  <input matInput [(ngModel)]="commentMap[r.id]" [disabled]="r.hasReview">
+                </mat-form-field>
+
+                <button mat-button color="primary"
+                        (click)="saveReview(r)"
+                        [disabled]="r.hasReview || !selectedRatingMap[r.id]">
+                  Sačuvaj recenziju
+                </button>
+              </ng-template>
+
+            </ng-container>
+            <ng-template #dash> — </ng-template>
+          </td>
+        </ng-container>
+
+        <ng-container matColumnDef="actions">
+          <th mat-header-cell *matHeaderCellDef>Akcije</th>
+          <td mat-cell *matCellDef="let r">
+            <button *ngIf="r.status==='gledano'" mat-button color="warn" (click)="remove(r)">Obriši</button>
+            <span *ngIf="r.status!=='gledano'">—</span>
+          </td>
+        </ng-container>
+
+        <tr mat-header-row *matHeaderRowDef="displayedHistoryCols"></tr>
+        <tr mat-row *matRowDef="let row; columns: displayedHistoryCols;"></tr>
+      </table>
+
+      <ng-template #noHistory>
+        <p>Nema stavki u istoriji.</p>
+      </ng-template>
+    </mat-card-content>
+  </mat-card>
+</div>

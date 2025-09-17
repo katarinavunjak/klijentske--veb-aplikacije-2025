@@ -1,0 +1,15 @@
+.wrapper {
+  max-width: 800px;
+  margin: 40px auto;
+  padding: 20px;
+  line-height: 1.6;
+}
+
+.cyan {
+  color: #00bcd4;
+  text-decoration: none;
+}
+
+.cyan:hover {
+  text-decoration: underline;
+}

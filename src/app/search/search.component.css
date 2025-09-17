@@ -1,0 +1,8 @@
+.search-wrapper { margin: 20px; }
+.search-card { margin-bottom: 16px; }
+.filters {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(220px, 1fr));
+  gap: 12px;
+}
+.results-table { width: 100%; }

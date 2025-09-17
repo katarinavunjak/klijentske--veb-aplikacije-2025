@@ -1,0 +1,43 @@
+@import '@angular/material/prebuilt-themes/purple-green.css';
+
+* { box-sizing: border-box; }
+html, body { height: 100%; }
+body {
+  margin: 0;
+  font-family: Inter, Roboto, "Helvetica Neue", Arial, sans-serif;
+  background: #0f0f12;
+  color: #e9e9f1;
+}
+
+
+a { color: #70d6ff; text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+
+mat-card {
+  border-radius: 12px !important;
+  background: #17171c !important;
+  color: #e9e9f1 !important;
+}
+
+
+button[mat-button], a[mat-button] { border-radius: 10px !important; }
+
+
+.mat-mdc-form-field-subscript-wrapper { color: #aaa; }
+
+
+table.mat-mdc-table { background: #17171c; }
+.mat-mdc-header-cell, .mat-mdc-cell { color: #e9e9f1; }
+
+
+.container { margin: 20px; }
+
+
+.navbar {
+  display: flex; align-items: center; gap: 10px;
+  background: #141419; padding: 10px 16px; border-bottom: 1px solid #22232b;
+}
+.navbar .nav-link { color: #e9e9f1; padding: 6px 10px; border-radius: 8px; }
+.navbar .nav-link:hover { background: #1c1c24; }
+.navbar .spacer { flex: 1; }
